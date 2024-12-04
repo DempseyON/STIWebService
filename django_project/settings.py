@@ -28,9 +28,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'STIWEBSERVICE',
+    'corsheaders',  # Añadido para CORS
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Añadido para CORS
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -105,6 +107,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # Archivos estáticos
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Configuración del modelo de usuario personalizado
 AUTH_USER_MODEL = 'STIWEBSERVICE.CustomUser'
@@ -115,6 +118,15 @@ HANDLER403 = 'django_project.settings.error_403'
 
 def error_403(request, exception=None):
     return render(request, '403.html', status=403)
+
+# Configuraciones de CORS
+CORS_ALLOWED_ORIGINS = os.getenv(
+    'CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000'
+).split(',')
+
+# Permitir todas las cabeceras y métodos para desarrollo
+CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = ['*']
 
 # Configuraciones adicionales para producción
 if not DEBUG:
