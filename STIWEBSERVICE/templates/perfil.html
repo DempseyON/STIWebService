@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Perfil de Usuario</h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Información Básica</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</li>
+                            <li class="list-group-item"><strong>Correo Electrónico:</strong> {{ user.email }}</li>
+                            <li class="list-group-item"><strong>Nombre de Usuario:</strong> {{ user.username }}</li>
+                        </ul>
+
+                        <h5 class="card-title mt-4">Información de la Empresa</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Empresa:</strong> {{ user.perfil.nombre_empresa }}</li>
+                            <li class="list-group-item"><strong>Cargo:</strong> {{ user.perfil.cargo }}</li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="{% url 'confirmar_logout' %}" class="btn btn-danger">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

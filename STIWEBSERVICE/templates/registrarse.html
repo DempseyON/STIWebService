@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% block content %}
+<!-- inicio registrarse -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <h1 class="text-center mb-4">Registrarse</h1>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <h5 class="mb-3">Información de Usuario</h5>
+                        {{ usuario_form.as_p }}
+                        <h5 class="mb-3">Información de la Empresa</h5>
+                        {{ perfil_form.as_p }}
+                        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                    </form>
+                    <div class="mt-3 text-center">
+                        <a href="{% url 'login' %}" class="text-decoration-none">¿Ya tienes una cuenta? Inicia sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- fin registrarse -->
+{% endblock %}
+

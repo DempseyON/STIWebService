@@ -1,0 +1,78 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Encuesta de Satisfacción</h1>
+  <p class="text-center mb-4">
+      Ayúdanos a mejorar nuestro servicio respondiendo esta breve encuesta.
+  </p>
+
+  <!-- Formulario de Encuesta -->
+  <div class="card shadow-sm">
+      <div class="card-body">
+          <form id="feedbackForm">
+              <!-- Calificación del Servicio -->
+              <div class="mb-3">
+                  <label class="form-label">¿Cómo calificarías el servicio recibido?</label>
+                  <div class="d-flex justify-content-around">
+                      <div>
+                          <input type="radio" class="btn-check" name="rating" id="rating1" value="1" required>
+                          <label class="btn btn-outline-danger" for="rating1">1 ⭐</label>
+                      </div>
+                      <div>
+                          <input type="radio" class="btn-check" name="rating" id="rating2" value="2">
+                          <label class="btn btn-outline-warning" for="rating2">2 ⭐⭐</label>
+                      </div>
+                      <div>
+                          <input type="radio" class="btn-check" name="rating" id="rating3" value="3">
+                          <label class="btn btn-outline-secondary" for="rating3">3 ⭐⭐⭐</label>
+                      </div>
+                      <div>
+                          <input type="radio" class="btn-check" name="rating" id="rating4" value="4">
+                          <label class="btn btn-outline-info" for="rating4">4 ⭐⭐⭐⭐</label>
+                      </div>
+                      <div>
+                          <input type="radio" class="btn-check" name="rating" id="rating5" value="5">
+                          <label class="btn btn-outline-success" for="rating5">5 ⭐⭐⭐⭐⭐</label>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Comentarios Adicionales -->
+              <div class="mb-3">
+                  <label for="comments" class="form-label">Comentarios adicionales (opcional)</label>
+                  <textarea class="form-control" id="comments" name="comments" rows="4" placeholder="Deja tus comentarios aquí..."></textarea>
+              </div>
+
+              <!-- Botón de Enviar -->
+              <button type="submit" class="btn btn-primary w-100">Enviar Encuesta</button>
+          </form>
+      </div>
+  </div>
+
+  <!-- Mensaje de Confirmación -->
+  <div id="thankYouMessage" class="alert alert-success mt-4 d-none" role="alert">
+      ¡Gracias por tu feedback! Apreciamos tus comentarios.
+  </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Script para manejo de formulario -->
+<script>
+  const feedbackForm = document.getElementById('feedbackForm');
+  const thankYouMessage = document.getElementById('thankYouMessage');
+
+  feedbackForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      // Simulación de envío del formulario
+      console.log('Calificación:', feedbackForm.rating.value);
+      console.log('Comentarios:', feedbackForm.comments.value);
+
+      // Mostrar mensaje de agradecimiento
+      thankYouMessage.classList.remove('d-none');
+
+      // Reiniciar el formulario
+      feedbackForm.reset();
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Configuración del Usuario</h1>
+
+  <div class="row justify-content-center">
+      <div class="col-lg-6">
+          <!-- Formulario de Configuración -->
+          <div class="card shadow-sm">
+              <div class="card-body">
+                  <form id="userSettingsForm">
+                      <!-- Nombre -->
+                      <div class="mb-3">
+                          <label for="name" class="form-label">Nombre Completo</label>
+                          <input type="text" class="form-control" id="name" name="name" placeholder="Ingresa tu nombre completo" value="Juan Pérez" required>
+                      </div>
+
+                      <!-- Correo Electrónico -->
+                      <div class="mb-3">
+                          <label for="email" class="form-label">Correo Electrónico</label>
+                          <input type="email" class="form-control" id="email" name="email" placeholder="Ingresa tu correo electrónico" value="juan.perez@example.com" required>
+                      </div>
+
+                      <!-- Contraseña Actual -->
+                      <div class="mb-3">
+                          <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                          <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Ingresa tu contraseña actual" required>
+                      </div>
+
+                      <!-- Nueva Contraseña -->
+                      <div class="mb-3">
+                          <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                          <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Ingresa tu nueva contraseña">
+                      </div>
+
+                      <!-- Confirmar Nueva Contraseña -->
+                      <div class="mb-3">
+                          <label for="confirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirma tu nueva contraseña">
+                      </div>
+
+                      <button type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
+                  </form>
+              </div>
+          </div>
+
+          <!-- Mensaje de Confirmación -->
+          <div id="confirmationMessage" class="alert alert-success mt-4 d-none" role="alert">
+              ¡Tu configuración ha sido actualizada con éxito!
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Script para manejar el formulario -->
+<script>
+  const userSettingsForm = document.getElementById('userSettingsForm');
+  const confirmationMessage = document.getElementById('confirmationMessage');
+
+  userSettingsForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = userSettingsForm.name.value;
+      const email = userSettingsForm.email.value;
+      const currentPassword = userSettingsForm.currentPassword.value;
+      const newPassword = userSettingsForm.newPassword.value;
+      const confirmPassword = userSettingsForm.confirmPassword.value;
+
+      // Validación de contraseñas
+      if (newPassword && newPassword !== confirmPassword) {
+          alert("Las nuevas contraseñas no coinciden. Por favor, inténtalo de nuevo.");
+          return;
+      }
+
+      // Simulación de envío
+      console.log("Datos enviados:");
+      console.log("Nombre:", name);
+      console.log("Correo:", email);
+      console.log("Contraseña actual:", currentPassword);
+      if (newPassword) console.log("Nueva contraseña:", newPassword);
+
+      // Mostrar mensaje de confirmación
+      confirmationMessage.classList.remove('d-none');
+
+      // Reiniciar el formulario
+      userSettingsForm.reset();
+  });
+</script>
+{% endblock %}

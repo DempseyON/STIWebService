@@ -1,0 +1,84 @@
+# Django
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Media files
+/media
+/media/*
+
+# Static files
+/static
+/static/*
+
+# Virtual environment
+venv/
+env/
+ENV/
+*.venv
+*.env
+.env
+
+# VSCode settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# macOS specific files
+.DS_Store
+
+# Node.js (React)
+
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Log files
+*.log
+
+# Coverage directory used by testing tools
+coverage/
+
+# Build directory
+build/
+dist/
+
+# Cache directories
+.cache/
+.tmp/
+*.cache
+
+# Windows specific files
+Thumbs.db
+
+# General ignores for React
+node_modules/
+dist/
+.env
+.DS_Store
+
+# Ignore the backend directory
+../volleyball-back/
