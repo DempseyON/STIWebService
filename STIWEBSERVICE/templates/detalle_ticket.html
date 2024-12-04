@@ -1,94 +1,113 @@
 {% extends "index.html" %}
 {% block content %}
 <div class="container mt-5">
-  <h1 class="text-center mb-4">Detalles del Ticket</h1>
+    <h1 class="text-center mb-4">Detalles del Ticket</h1>
 
-  <!-- Información Principal del Ticket -->
-  <div class="card shadow-sm mb-4">
-      <div class="card-header bg-secondary text-white">
-          <h5 class="mb-0">Información del Ticket</h5>
-      </div>
-      <div class="card-body">
-          <div class="row mb-3">
-              <div class="col-md-6">
-                  <p><strong>ID del Ticket:</strong> <span id="ticketId">101</span></p>
-                  <p><strong>Nombre del Solicitante:</strong> <span id="ticketName">Juan Pérez</span></p>
-                  <p><strong>Correo Electrónico:</strong> <span id="ticketEmail">juan@example.com</span></p>
-              </div>
-              <div class="col-md-6">
-                  <p><strong>Departamento:</strong> <span id="ticketDepartment">Soporte Técnico</span></p>
-                  <p><strong>Estado:</strong> <span id="ticketStatus" class="badge bg-warning text-dark">Pendiente</span></p>
-                  <p><strong>Prioridad:</strong> <span id="ticketPriority" class="badge bg-danger">Alta</span></p>
-              </div>
-          </div>
-          <p><strong>Descripción:</strong></p>
-          <p id="ticketDescription">
-              El usuario reporta problemas al iniciar sesión en el sistema. Solicita soporte urgente para acceder a sus datos.
-          </p>
-      </div>
-  </div>
+    <!-- Información Principal del Ticket -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Información del Ticket - ID: {{ ticket.id }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>Técnico Asignado:</strong>
+                        <span class="badge bg-info text-dark">{{ ticket.tecnico_asignado.get_full_name|default:"Sin asignar" }}</span></p>
+                    <p><strong>Nombre del Solicitante:</strong> {{ ticket.usuario.get_full_name }}</p>
+                    <p><strong>Correo Electrónico:</strong> {{ ticket.usuario.email }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Estado:</strong>
+                        <span class="badge bg-primary text-white">{{ ticket.estado }}</span>
+                    </p>
+                    <p><strong>Prioridad:</strong>
+                        <span class="badge bg-warning text-dark">{{ ticket.prioridad|default:"-" }}</span>
+                    </p>
+                    <p><strong>¿Requiere Visita en Terreno?:</strong>
+                        <span class="badge bg-{{ ticket.visita_terreno|yesno:"success,secondary" }}">
+                            {{ ticket.visita_terreno|yesno:"Sí,No" }}
+                        </span>
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <p><strong>Descripción:</strong></p>
+                    <p>{{ ticket.descripcion }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <!-- Historial de Actualizaciones -->
-  <div class="card shadow-sm mb-4">
-      <div class="card-header bg-secondary text-white">
-          <h5 class="mb-0">Historial de Actualizaciones</h5>
-      </div>
-      <div class="card-body">
-          <ul class="list-group" id="ticketUpdates">
-              <li class="list-group-item">
-                  <strong>2024-11-27:</strong> Se creó el ticket.
-              </li>
-              <li class="list-group-item">
-                  <strong>2024-11-28:</strong> Asignado a Soporte Técnico.
-              </li>
-          </ul>
-      </div>
-  </div>
+    <!-- Gestión del Ticket (solo técnicos) -->
+    {% if user.is_staff %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Gestión del Ticket</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
 
-  <!-- Botones de Acción -->
-  <div class="d-flex justify-content-between">
-      <a href="/dashboard" class="btn btn-secondary">Volver al Dashboard</a>
-      <div>
-          <button class="btn btn-success">Marcar como Resuelto</button>
-          <button class="btn btn-danger">Eliminar Ticket</button>
-      </div>
-  </div>
+                <!-- Estado -->
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select class="form-select" id="estado" name="estado" required>
+                        <option value="Pendiente" {% if ticket.estado == "Pendiente" %}selected{% endif %}>Pendiente
+                        </option>
+                        <option value="En Progreso" {% if ticket.estado == "En Progreso" %}selected{% endif %}>En Progreso
+                        </option>
+                        <option value="Resuelto" {% if ticket.estado == "Resuelto" %}selected{% endif %}>Resuelto</option>
+                    </select>
+                </div>
+
+                <!-- Prioridad -->
+                <div class="mb-3">
+                    <label for="prioridad" class="form-label">Prioridad</label>
+                    <select class="form-select" id="prioridad" name="prioridad" required>
+                        <option value="Alta" {% if ticket.prioridad == "Alta" %}selected{% endif %}>Alta</option>
+                        <option value="Media" {% if ticket.prioridad == "Media" %}selected{% endif %}>Media</option>
+                        <option value="Baja" {% if ticket.prioridad == "Baja" %}selected{% endif %}>Baja</option>
+                    </select>
+                </div>
+
+                <!-- Visita en Terreno -->
+                <div class="form-check mb-3">
+                    <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        id="visita_terreno" 
+                        name="visita_terreno" 
+                        {% if ticket.visita_terreno %}checked{% endif %}
+                    >
+                    <label class="form-check-label" for="visita_terreno">
+                        ¿Requiere Visita en Terreno?
+                    </label>
+                </div>
+
+
+                <!-- Solución -->
+                <div class="mb-3">
+                    <label for="solucion" class="form-label">Descripción de la Solución</label>
+                    <textarea class="form-control" id="solucion" name="solucion" rows="4">{{ ticket.solucion|default:"" }}</textarea>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver al Dashboard</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Botón de Eliminar (solo técnicos) -->
+    {% if user.is_staff %}
+    <div class="d-flex justify-content-end">
+        <form method="post" action="{% url 'eliminar_ticket' ticket.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Eliminar Ticket</button>
+        </form>
+    </div>
+    {% endif %}
 </div>
-
-<!-- Bootstrap Bundle JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Simulación de Datos -->
-<script>
-  // Simulación de datos para detalles del ticket
-  const ticketData = {
-      id: 101,
-      name: "Juan Pérez",
-      email: "juan@example.com",
-      department: "Soporte Técnico",
-      status: "Pendiente",
-      priority: "Alta",
-      description: "El usuario reporta problemas al iniciar sesión en el sistema. Solicita soporte urgente para acceder a sus datos.",
-      updates: [
-          { date: "2024-11-27", message: "Se creó el ticket." },
-          { date: "2024-11-28", message: "Asignado a Soporte Técnico." }
-      ]
-  };
-
-  // Mostrar detalles del ticket
-  document.getElementById("ticketId").innerText = ticketData.id;
-  document.getElementById("ticketName").innerText = ticketData.name;
-  document.getElementById("ticketEmail").innerText = ticketData.email;
-  document.getElementById("ticketDepartment").innerText = ticketData.department;
-  document.getElementById("ticketStatus").innerText = ticketData.status;
-  document.getElementById("ticketPriority").innerText = ticketData.priority;
-  document.getElementById("ticketDescription").innerText = ticketData.description;
-
-  // Mostrar historial de actualizaciones
-  const ticketUpdates = document.getElementById("ticketUpdates");
-  ticketUpdates.innerHTML = ticketData.updates.map(update => `
-      <li class="list-group-item">
-          <strong>${update.date}:</strong> ${update.message}
-      </li>
-  `).join("");
-</script>
 {% endblock %}

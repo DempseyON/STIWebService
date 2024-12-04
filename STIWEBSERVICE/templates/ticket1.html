@@ -1,53 +1,32 @@
 {% extends "index.html" %}
 {% block content %}
- <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <h1 class="text-center mb-4">Enviar Ticket de Soporte</h1>
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <form method="post">
-                            {% csrf_token %}
-                            <!-- Título -->
-                            <div class="mb-3">
-                                <label for="id_titulo" class="form-label">Título</label>
-                                <input type="text" name="titulo" id="id_titulo" class="form-control" placeholder="Ingresa un título" required>
-                            </div>
-                            <!-- Descripción -->
-                            <div class="mb-3">
-                                <label for="id_descripcion" class="form-label">Descripción del Problema</label>
-                                <textarea name="descripcion" id="id_descripcion" class="form-control" rows="4" placeholder="Describe tu problema" required></textarea>
-                            </div>
-                            <!-- Departamento -->
-                            <div class="mb-3">
-                                <label for="id_departamento" class="form-label">Departamento</label>
-                                <select name="departamento" id="id_departamento" class="form-select" required>
-                                    <option value="" selected disabled>Selecciona un departamento</option>
-                                    {% for departamento in departamentos %}
-                                    <option value="{{ departamento.id }}">{{ departamento.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <!-- Prioridad -->
-                            <div class="mb-3">
-                                <label for="id_prioridad" class="form-label">Prioridad</label>
-                                <select name="prioridad" id="id_prioridad" class="form-select" required>
-                                    <option value="" selected disabled>Selecciona la prioridad</option>
-                                    <option value="Alta">Alta</option>
-                                    <option value="Media">Media</option>
-                                    <option value="Baja">Baja</option>
-                                </select>
-                            </div>
-                            <!-- Botón de Enviar -->
-                            <button type="submit" class="btn btn-primary w-100">Enviar Ticket</button>
-                        </form>
-                    </div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <h1 class="text-center mb-4">Enviar Ticket de Soporte</h1>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- Título -->
+                        <div class="mb-3">
+                            <label for="id_titulo" class="form-label">Título</label>
+                            <input type="text" name="titulo" id="id_titulo" class="form-control"
+                                placeholder="Ingresa un título" required>
+                        </div>
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label for="id_descripcion" class="form-label">Descripción del Problema</label>
+                            <textarea name="descripcion" id="id_descripcion" class="form-control" rows="4"
+                                placeholder="Describa el problema y deje detalles adicionales de Acceso Remoto (AnyDesk) y direccion IP"
+                                required></textarea>
+                        </div>
+                        <!-- Botón de Enviar -->
+                        <button type="submit" class="btn btn-primary w-100">Enviar Ticket</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
+</div>
 {% endblock %}

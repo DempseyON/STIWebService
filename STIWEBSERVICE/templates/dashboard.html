@@ -1,19 +1,11 @@
 {% extends "index.html" %}
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Dashboard de Tickets</h1>
+    <h1 class="text-center mb-4">Dashboard Avanzado</h1>
 
-    <!-- Resumen de Métricas -->
+    <!-- Resumen de Tickets -->
     <div class="row text-center mb-4">
-        <div class="col-md-3">
-            <div class="card bg-primary text-white shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Total de Tickets</h5>
-                    <p class="display-6">{{ tickets_total }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card bg-warning text-white shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Tickets Pendientes</h5>
@@ -21,7 +13,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
+            <div class="card bg-info text-white shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Tickets En Proceso</h5>
+                    <p class="display-6">{{ tickets_en_proceso }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
             <div class="card bg-success text-white shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Tickets Resueltos</h5>
@@ -29,58 +29,81 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-danger text-white shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Tickets Sin Asignar</h5>
-                    <p class="display-6">{{ tickets_sin_asignar }}</p>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- Tabla de Tickets Recientes -->
-    <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white">
-            <h5 class="mb-0">Tickets Recientes</h5>
+    <!-- Tickets por Mes -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Tickets por Mes</h5>
         </div>
         <div class="card-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Estado</th>
-                        <th>Prioridad</th>
-                        <th>Fecha de Creación</th>
-                        <th>Acciones</th>
+                        <th>Mes</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% if tickets_recientes %}
-                        {% for ticket in tickets_recientes %}
-                        <tr>
-                            <td>{{ ticket.id }}</td>
-                            <td>{{ ticket.titulo }}</td>
-                            <td>{{ ticket.estado }}</td>
-                            <td>{{ ticket.prioridad }}</td>
-                            <td>{{ ticket.fecha_creacion|date:"Y-m-d H:i" }}</td>
-                            <td>
-                                <a href="{% url 'detalleticket' ticket.id %}" class="btn btn-primary btn-sm">Ver Detalles</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="6" class="text-center">No hay tickets recientes.</td>
-                        </tr>
-                    {% endif %}
+                    {% for data in tickets_por_mes %}
+                    <tr>
+                        <td>{{ data.mes|date:"F Y" }}</td>
+                        <td>{{ data.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tickets por Técnico -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Tickets por Técnico</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Técnico</th>
+                        <th>Total Tickets</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in tickets_por_tecnico %}
+                    <tr>
+                        <td>{{ data.tecnico_asignado__first_name }} {{ data.tecnico_asignado__last_name }}</td>
+                        <td>{{ data.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tickets por Empresa -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Tickets por Empresa</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Total Tickets</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in tickets_por_empresa %}
+                    <tr>
+                        <td>{{ data.usuario__nombre_empresa }}</td>
+                        <td>{{ data.total }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-<!-- Bootstrap Bundle JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}

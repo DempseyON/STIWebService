@@ -1,29 +1,40 @@
 {% extends "index.html" %}
 {% block content %}
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Perfil de Usuario</h1>
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Información Básica</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</li>
-                            <li class="list-group-item"><strong>Correo Electrónico:</strong> {{ user.email }}</li>
-                            <li class="list-group-item"><strong>Nombre de Usuario:</strong> {{ user.username }}</li>
-                        </ul>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Perfil de Usuario</h1>
 
-                        <h5 class="card-title mt-4">Información de la Empresa</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Empresa:</strong> {{ user.perfil.nombre_empresa }}</li>
-                            <li class="list-group-item"><strong>Cargo:</strong> {{ user.perfil.cargo }}</li>
-                        </ul>
-                        <div class="text-center mt-4">
-                            <a href="{% url 'confirmar_logout' %}" class="btn btn-danger">Cerrar Sesión</a>
-                        </div>
-                    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Información Básica -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    Información Básica
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><i class="bi bi-person"></i> <strong>Nombre:</strong> {{ user.first_name|default:"N/A" }} {{ user.last_name|default:"N/A" }}</li>
+                        <li class="list-group-item"><i class="bi bi-envelope"></i> <strong>Correo Electrónico:</strong> <span class="badge bg-secondary">{{ user.email|default:"N/A" }}</span></li>
+                        <li class="list-group-item"><i class="bi bi-person-badge"></i> <strong>Nombre de Usuario:</strong> {{ user.username }}</li>
+                    </ul>
                 </div>
             </div>
+
+            <!-- Información de la Empresa -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    Información de la Empresa
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><i class="bi bi-building"></i> <strong>Empresa:</strong> {{ user.nombre_empresa|default:"N/A" }}</li>
+                        <li class="list-group-item"><i class="bi bi-briefcase"></i> <strong>Cargo:</strong> {{ user.cargo|default:"N/A" }}</li>
+                    </ul>
+    
+        
+                </div>
+            </div>
+
         </div>
     </div>
+</div>
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import path
+from django.urls import path, re_path
 
 from STIWEBSERVICE import views
 
@@ -9,29 +9,16 @@ urlpatterns = [
     path('', views.index_vista, name='index'),
     path('ticket/', views.ticket_vista, name='ticket'),
     path('registrarse/', views.registrarse_vista, name='registrarse'),
-    path('dashboard/', views.dashboard_vista, name='dashboard'),
-    path('paneladmin/', views.paneladmin_vista, name='paneladmin'),
-    path('ticket/<int:ticket_id>/asignar/',
-         views.asignarticket_vista,
-         name='asignarticket'),
+    path('home/', views.home_vista, name='home'),
     path('ticket/<int:ticket_id>/',
-         views.detalleticket_vista,
-         name='detalleticket'),
-    path('ticket/<int:ticket_id>/editar/',
-         views.edicionticket_vista,
-         name='edicionticket'),
-    path('historialticket/',
-         views.historialticket_vista,
-         name='historialticket'),
-    path('loginadmin/', views.loginadmin_vista, name='loginadmin'),
-    path('configuracionusuario/',
-         views.configuracionusuario_vista,
-         name='configuracionusuario'),
+         views.detalle_ticket_vista, name='detalleticket'),
+    path('ticket/eliminar/<int:ticket_id>/',
+         views.eliminar_ticket_vista, name='eliminar_ticket'),
+
+    path('dashboard/', views.dashboard_vista, name='dashboard'),
     path('encuesta/<int:ticket_id>', views.encuesta_vista, name='encuesta'),
     path('login/', views.login_view, name='login'),
     path('perfil/', views.perfil_usuario, name='perfil_usuario'),
-    path('confirmar-cerrar-sesion/',
-         views.confirmar_logout,
-         name='confirmar_logout'),
     path('logout/', views.custom_logout, name='logout'),
+    re_path(r'^.*$', views.error_404_view, name='error_404'),
 ]
